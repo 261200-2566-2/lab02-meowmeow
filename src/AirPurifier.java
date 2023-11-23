@@ -4,24 +4,24 @@ import java.util.List;
 
 public class AirPurifier {
     public static List<String> models = new ArrayList<String>();
-    public static List<Integer> modelcounts = new ArrayList<Integer>();
+    public static List<Integer> modelCounts = new ArrayList<Integer>();
 
     public static void createNewAirPurifier(String model) {
         if (AirPurifier.models.contains(model)) {
             int modelIndex = AirPurifier.models.indexOf(model);
-            AirPurifier.modelcounts.set(modelIndex, AirPurifier.modelcounts.get(modelIndex) + 1);
+            AirPurifier.modelCounts.set(modelIndex, AirPurifier.modelCounts.get(modelIndex) + 1);
         } else {
             AirPurifier.models.add(model);
-            AirPurifier.modelcounts.add(1);
+            AirPurifier.modelCounts.add(1);
         }
     }
 
     public static String getMostPopularModel() {
         int max = 0;
         int maxIndex = 0;
-        for (int i = 0; i < AirPurifier.modelcounts.size(); i++) {
-            if (AirPurifier.modelcounts.get(i) > max) {
-                max = AirPurifier.modelcounts.get(i);
+        for (int i = 0; i < AirPurifier.modelCounts.size(); i++) {
+            if (AirPurifier.modelCounts.get(i) > max) {
+                max = AirPurifier.modelCounts.get(i);
                 maxIndex = i;
             }
         }
