@@ -42,7 +42,7 @@ public class AirPurifier {
     private int filterLife = 100;
     private int currentPM2_5 = 0;
     private Mode mode = Mode.MANUAL;
-    
+
     public AirPurifier() {
         this("Default");
     }
