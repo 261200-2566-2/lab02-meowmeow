@@ -82,6 +82,7 @@ public class AirPurifier {
     }
 
     public void turnOff() {
+        fanSpeed = 0;
         power = false;
     }
 
