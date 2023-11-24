@@ -1,6 +1,7 @@
 import java.util.UUID;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class AirPurifier {
     public static List<String> models = new ArrayList<String>();
@@ -38,7 +39,7 @@ public class AirPurifier {
     private String serialNumber;
     private boolean power;
     private int fanSpeed;
-    private int topFanSpeed = 10;
+    private int maxFanSpeed = 10;
     private int filterLife = 100;
     private int currentPM2_5 = 0;
     private Mode mode = Mode.MANUAL;
@@ -53,9 +54,9 @@ public class AirPurifier {
         AirPurifier.createNewAirPurifier(model);
     }
 
-    public AirPurifier(String model, int topFanSpeed) {
+    public AirPurifier(String model, int maxFanSpeed) {
         this(model);
-        this.topFanSpeed = topFanSpeed;
+        this.maxFanSpeed = maxFanSpeed;
     }
 
     public void turnOn() {
@@ -63,8 +64,9 @@ public class AirPurifier {
             System.out.println("Filter needs to be replaced.");
             power = false;
         }
-        setFanSpeed(topFanSpeed / 2);
+        currentPM2_5 = new Random().nextInt(60);
         power = true;
+        setFanSpeed(maxFanSpeed / 2);
         filterLife--;
     }
 
@@ -73,8 +75,10 @@ public class AirPurifier {
             System.out.println("Filter needs to be replaced.");
             power = false;
         }
+        currentPM2_5 = new Random().nextInt(60);
         power = true;
         setFanSpeed(fanSpeed);
+        filterLife--;
     }
 
     public void turnOff() {
@@ -88,23 +92,24 @@ public class AirPurifier {
         }
         if (mode == Mode.AUTO) {
             if (currentPM2_5 > 50) {
-                setFanSpeed(topFanSpeed);
+                this.fanSpeed = maxFanSpeed;
             } else if (currentPM2_5 > 25) {
-                setFanSpeed(topFanSpeed / 2);
+                this.fanSpeed = maxFanSpeed / 2;
             } else {
-                setFanSpeed(topFanSpeed / 4);
+                this.fanSpeed = maxFanSpeed / 4;
+                System.out.println(fanSpeed);
             }
         } else if (mode == Mode.SLEEP) {
             if (currentPM2_5 > 50) {
-                setFanSpeed(topFanSpeed / 2);
+                this.fanSpeed = maxFanSpeed / 2;
             } else if (currentPM2_5 > 25) {
-                setFanSpeed(topFanSpeed / 4);
+                this.fanSpeed = maxFanSpeed / 4;
             } else {
-                setFanSpeed(topFanSpeed / 8);
+                this.fanSpeed = maxFanSpeed / 8;
             }
-        } else {
-            if (fanSpeed > topFanSpeed) {
-                this.fanSpeed = topFanSpeed;
+        } else if (mode == Mode.MANUAL) {
+            if (fanSpeed > maxFanSpeed) {
+                this.fanSpeed = maxFanSpeed;
             } else if (fanSpeed < 0) {
                 this.fanSpeed = 0;
             } else {
@@ -136,5 +141,13 @@ public class AirPurifier {
 
     public Mode getMode() {
         return mode;
+    }
+    
+    public int getFilterLife() {
+        return filterLife;
+    }
+
+    public int getCurrentPM2_5() {
+        return currentPM2_5;
     }
 }
